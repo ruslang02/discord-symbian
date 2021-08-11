@@ -1,18 +1,18 @@
-
-
 TEMPLATE = app
-TARGET = tweetian
+TARGET = discord-symbian_0xEA2EE72D
+TARGET.UID3 = 0xEA2EE72D
+TARGET.CAPABILITY += NetworkServices
+TARGET.EPOCHEAPSIZE = 0x40000 0x4000000
 
-# Application version
-VERSION = 1.8.3
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+VERSION = 1.0.0
+DEFINES += APP_VERSION=\"$$VERSION\"
 
-# Qt Library
-QT += network
+vendorinfo += "%{\"ruslang02\"}" ":\"ruslang02\""
+my_deployment.pkg_prerules = vendorinfo
 
-# Qt Mobility Library
-CONFIG += mobility
-MOBILITY += feedback location gallery
+DEPLOYMENT += my_deployment
+DEPLOYMENT.display_name = Discord
+ICON = assets/logo.svg
 
 QT += network
 
@@ -31,27 +31,5 @@ SOURCES += \
     src/main.cpp \
     src/cpp/Socket.cpp
 
-
-symbian{
-    TARGET = tweetian_0xA00158E5
-    TARGET.UID3 = 0xA00158E5
-    TARGET.CAPABILITY += NetworkServices Location LocalServices ReadUserData WriteUserData
-    TARGET.EPOCHEAPSIZE = 0x40000 0x4000000
-
-    CONFIG += qt-components
-    vendorinfo += "%{\"Dickson\"}" ":\"Dickson\""
-    my_deployment.pkg_prerules = vendorinfo
-    DEPLOYMENT += my_deployment
-    DEPLOYMENT.display_name = Tweetian
-    ICON = assets/logo.svg
-
-    # Symbian have a different syntax
-    DEFINES -= APP_VERSION=\\\"$$VERSION\\\"
-    DEFINES += APP_VERSION=\"$$VERSION\"
-
-    LIBS += -lavkon -lapgrfx -leikcore -lcone -lapmime
-}
-
-# Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 qtcAddDeployment()
