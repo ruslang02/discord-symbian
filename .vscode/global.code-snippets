@@ -1,0 +1,10 @@
+{
+	"import entity": {
+		"prefix": "qimport",
+		"body": [
+			"import { $1 } from \"$2\";",
+			"declare const $1: $1;",
+			"Qt.include(\"$2.js\");"
+		]
+	}
+}

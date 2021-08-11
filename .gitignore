@@ -1,0 +1,13 @@
+*.user
+*.cache
+*.sis
+*.mmp
+*.rss
+*.pkg
+*.loc
+bld.inf
+obj/
+moc/
+**/*.js
+node_modules/
+!src/ui/client.js
