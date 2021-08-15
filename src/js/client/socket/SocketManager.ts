@@ -4,7 +4,7 @@ import { Client } from "../Client";
 import { handlers } from "./handlers";
 declare const handlers: handlers;
 Qt.include("./handlers/index.js");
-
+var i = 0;
 const SocketManager = class SocketManager {
     constructor(private client: Client) { }
 

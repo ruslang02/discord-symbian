@@ -8,4 +8,5 @@ export interface MessageDto {
     content: string
     timestamp: string
     edited_timestamp: string | null
+    mentions: UserDto[]
 }

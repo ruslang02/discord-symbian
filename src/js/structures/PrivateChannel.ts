@@ -6,7 +6,7 @@ const PrivateChannel = class PrivateChannel {
     id!: string;
     type!: number;
     lastMessageId!: string;
-    recipientIds: string[] = [];
+    private recipientIds: string[] = [];
 
     constructor(private client: Client, dto: PrivateChannelDto) {
         this._patch(dto);

@@ -31,7 +31,7 @@ Page {
     }
 
     Component {
-        id: highlightView
+        id: dmHighlightView
 
         Rectangle {
             width: dmListView.width
@@ -49,8 +49,7 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         model: dmListModel
-        cacheBuffer: 1000
-        highlight: highlightView
+        highlight: dmHighlightView
         highlightFollowsCurrentItem: true
         highlightMoveDuration: 0
         highlightResizeDuration: 0
@@ -59,39 +58,28 @@ Page {
         focus: true
 
         delegate: MouseArea {
-            id: userItem
+            id: dmListItem
             width: dmListView.width
             height: 40
             onPressed: {
                 dmListView.currentIndex = index;
             }
-            onClicked: Js.openMessages({
-                id: id,
-                recipient: recipient
-            })
-
+            onClicked: Js.openMessages(id)
             Row {
                 spacing: 10
                 Image {
-                    id: userAvatar
                     width: 40
                     height: 40
                     sourceSize.width: 40
                     sourceSize.height: 40
-                    source: "https://cdn.discordapp.com/avatars/" + recipient.id + "/" + recipient.avatar + ".jpg?size=40"
+                    source: "https://cdn.discordapp.com/avatars/" + userId + "/" + userAvatar + ".jpg?size=40"
                 }
-
-                    Text {
-                        y: 8
-                        text: "<b>" + recipient.username + "</b>#" + recipient.discriminator
-                        font.pixelSize: 18
-                        color: palette.text
-                    }
-/* 
-                    Text {
-                        font.pixelSize: 18
-                        color: palette.text
-                    } */
+                Text {
+                    y: 8
+                    text: "<b>" + userName + "</b>#" + userDiscriminator
+                    font.pixelSize: 18
+                    color: palette.text
+                }
             }
         }
     }

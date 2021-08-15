@@ -15,6 +15,7 @@ function HELLO(client: Client, { d: data }: Payload<HelloData>) {
         d: {
             token: client.token,
             capabilities: 1,
+            intents: 4096,
             properties: {
                 "$os": "Symbian^3",
                 "$browser": "discord-symbian",

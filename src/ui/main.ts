@@ -51,7 +51,7 @@ function handleReady() {
         );
     })
     window.client.on("ready", () => {
-        console.log("Connected to Discord.");
+        // console.log("Connected to Discord.");
     });
     window.client.on("debug", msg => {
         if (window.store.get("settings").debug) {
@@ -59,11 +59,13 @@ function handleReady() {
         }
     });
     window.client.on("message", msg => {
-        if (symbian.foreground) {
-            banner.text = "<b>" + msg.author.username + "</b><br />" + msg.content;
-            banner.open();
-        } else {
-            avkon.showPopup(msg.author.username, msg.content);
+        if ((!msg.guild_id || msg.mentions.some(m => m.id === window.client.user?.id)) && msg.author.id !== window.client.user?.id) {
+            if (symbian.foreground) {
+                banner.text = "<b>" + msg.author.username + "</b><br />" + msg.content;
+                banner.open();
+            } else {
+                avkon.showPopup(msg.author.username, msg.content);
+            }
         }
     })
     window.client.ready();
