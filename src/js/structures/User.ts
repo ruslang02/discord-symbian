@@ -12,8 +12,8 @@ const User = class User {
         this._patch(dto);
     }
     _patch(data: UserDto) {
-        this.username = data.username ?? null;
-        this.discriminator = data.discriminator ?? null;
+        this.username = data.username;
+        this.discriminator = data.discriminator;
         this.id = data.id ?? null;
         this.email = data.email;
         this.avatar = data.avatar;
