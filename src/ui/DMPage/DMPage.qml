@@ -5,14 +5,9 @@ import "DMPage.js" as Js
 Page {
     id: dmPage
 
+    Component.onCompleted: Js.handleReady()
+
     SystemPalette { id: palette; colorGroup: SystemPalette.Active }
-    
-    Button {
-        text: "Load channels"
-        z: 2
-        anchors.bottom: parent.bottom
-        onClicked: Js.loadChannels()
-    }
     
     ListHeading {
         id: dmListHeading
@@ -35,6 +30,17 @@ Page {
         id: dmListModel
     }
 
+    Component {
+        id: highlightView
+
+        Rectangle {
+            width: dmListView.width
+            height: 40
+            color: palette.highlight
+            y: dmListView.currentItem.y
+        }
+    }
+
     ListView {
         id: dmListView
         height: parent.height
@@ -43,40 +49,50 @@ Page {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         model: dmListModel
-        delegate: ListItem {
+        cacheBuffer: 1000
+        highlight: highlightView
+        highlightFollowsCurrentItem: true
+        highlightMoveDuration: 0
+        highlightResizeDuration: 0
+        highlightMoveSpeed: 0
+        highlightResizeSpeed: 0
+        focus: true
+
+        delegate: MouseArea {
             id: userItem
-            height: 48
             width: dmListView.width
+            height: 40
+            onPressed: {
+                dmListView.currentIndex = index;
+            }
+            onClicked: Js.openMessages({
+                id: id,
+                recipient: recipient
+            })
 
             Row {
                 spacing: 10
                 Image {
                     id: userAvatar
-                    width: 48
-                    height: 48
-                    sourceSize.width: 48
-                    z: 1
-                    smooth: true
-                    source: "https://cdn.discordapp.com/avatars/" + id + "/" + avatar + ".jpg"
+                    width: 40
+                    height: 40
+                    sourceSize.width: 40
+                    sourceSize.height: 40
+                    source: "https://cdn.discordapp.com/avatars/" + recipient.id + "/" + recipient.avatar + ".jpg?size=40"
                 }
-                Column {
-                    spacing: 0
 
                     Text {
-                        text: username
-                        font.bold: true
+                        y: 8
+                        text: "<b>" + recipient.username + "</b>#" + recipient.discriminator
                         font.pixelSize: 18
                         color: palette.text
                     }
-
+/* 
                     Text {
-                        text: discriminator
                         font.pixelSize: 18
                         color: palette.text
-                    }
-                }
+                    } */
             }
-
         }
     }
 }

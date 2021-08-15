@@ -1,22 +1,24 @@
-import { ClientImplInst } from "../client/Client";
+import { Client } from "../client/Client";
 import { UserDto } from "./dto/User";
 
-export interface User extends UserDto {}
+const User = class User {
+    id!: string;
+    email?: string;
+    discriminator!: string;
+    username!: string
+    avatar?: string
 
-const User = class UserImpl implements User {
-    email: string | null = null;
-    discriminator: string | null = null;
-    username: string | null = null;
-
-    constructor(private client: ClientImplInst, dto: UserDto) {
+    constructor(private client: Client, dto: UserDto) {
         this._patch(dto);
     }
     _patch(data: UserDto) {
         this.username = data.username ?? null;
         this.discriminator = data.discriminator ?? null;
-        this.email = data.email ?? null;
+        this.id = data.id ?? null;
+        this.email = data.email;
+        this.avatar = data.avatar;
     }
 }
 
 export type UserImpl = typeof User;
-
+export type User = typeof User["prototype"];

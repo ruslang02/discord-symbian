@@ -1,5 +1,8 @@
 export interface UserDto {
-    email: string | null
-    discriminator: string | null
-    username: string | null
+    id: string
+    email?: string
+    discriminator: string
+    username: string
+    avatar?: string
+    public_flags?: number
 };

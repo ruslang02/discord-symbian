@@ -1,7 +1,7 @@
 import { Payload } from "../../../structures/dto/Payload";
-import { ClientImplInst } from "../../Client";
+import { Client } from "../../Client";
 
-function GATEWAY_HELLO(client: ClientImplInst, { d: data }: Payload) {
+function GATEWAY_HELLO(client: Client, { d: data }: Payload) {
     client.ws.send({
         op: -1,
         t: "GATEWAY_CONNECT"

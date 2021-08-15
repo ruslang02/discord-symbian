@@ -6,5 +6,13 @@
 			"declare const $1: $1;",
 			"Qt.include(\"$2.js\");"
 		]
+	},
+	"create export const": {
+		"prefix": "qconst",
+		"body": [
+			"const $1 = $0;",
+			"",
+			"export type $1 = typeof $1;"
+		]
 	}
 }

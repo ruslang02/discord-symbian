@@ -1,35 +1,40 @@
 import QtQuick 1.1
 import com.nokia.symbian 1.1
+import com.nokia.extras 1.1
 import "DMPage"
+import "MessagesPage"
 import "main.js" as Js
-import "../js/client/Client.js" as Client
 
 PageStackWindow {
     id: window
-    platformSoftwareInputPanelEnabled: false
+    platformSoftwareInputPanelEnabled: true
     platformInverted: false
-    initialPage: DMPage { x: 0; y: 0; tools: toolBarLayout; }
+    initialPage: DMPage { x: 0; y: 0; tools: toolbar; }
     showStatusBar: true
     showToolBar: true
 
-    Component.onCompleted: {
-        Js.handleReady();
+    Component.onCompleted: Js.handleReady()
+
+    InfoBanner {
+        id: banner
     }
 
     ToolBarLayout {
-        id: toolBarLayout
+        id: toolbar
         ToolButton {
+            id: backButton
             flat: true
             iconSource: "toolbar-back"
-            onClicked: window.pageStack.depth <= 1 ? Qt.quit() : window.pageStack.pop()
         }
 
         ToolButton {
-            id: toolbutton2
-            x: 313
-            y: 41
-            text: "Login"
-            onClicked: Js.handleLoginClick()
+            id: loginButton
+            text: "Sign in"
+        }
+
+        ToolButton {
+            id: settingsButton
+            iconSource: "toolbar-settings"
         }
     }
 }

@@ -1,0 +1,16 @@
+{
+    "files.exclude": {
+        "**/*.cache": true,
+        "**/*.inf": true,
+        "**/*.js": true,
+        "**/*.loc": true,
+        "**/*.mmp": true,
+        "**/*.pkg": true,
+        "**/*.rss": true,
+        "**/*.sis": true,
+        "**/*.user": true,
+        "moc/": true,
+        "node_modules/": true,
+        "obj/": true
+    }
+}

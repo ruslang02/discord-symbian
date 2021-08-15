@@ -1,7 +1,7 @@
 import { Payload } from "../../../structures/dto/Payload";
-import { ClientImplInst } from "../../Client";
+import { Client } from "../../Client";
 
-function GATEWAY_CONNECT(client: ClientImplInst, { d: data }: Payload) {
+function GATEWAY_CONNECT(client: Client, { d: data }: Payload) {
     return;
 }
 
