@@ -13,16 +13,18 @@ declare const msgListView: Qml.ListView;
 declare const sendButton: Qml.ToolButton;
 declare const inputField: Qml.TextArea;
 
+function handleMessage(msg: MessageDto) {
+    if (msg.channel_id === msgPage.channelId) {
+        appendMessage(msg);
+        msgListView.positionViewAtIndex(msgListView.count - 1, ListView.End);
+    }
+}
+
 function handleReady() {
     defineTimers(msgPage);
     msgPage.setTimeout(() => {
         loadMessages();
-        window.client.on("message", msg => {
-            if (msg.channel_id === msgPage.channelId) {
-                appendMessage(msg);
-                msgListView.positionViewAtIndex(msgListView.count - 1, ListView.End);
-            }
-        })
+        window.client.on("message", handleMessage);
     });
     inputField.implicitHeightChanged.connect(() => {
         if (inputField.text.indexOf("\n") !== -1) {
@@ -32,6 +34,10 @@ function handleReady() {
     sendButton.clicked.connect(() => {
         sendMessage(inputField.text);
     });
+}
+
+function handleDestroyed() {
+    window.client.off("message", handleMessage);
 }
 
 function sendMessage(content: string) {
@@ -50,7 +56,6 @@ function appendMessage(msg: MessageDto) {
     const [year, month, day] = splitTimestamp[0].split("-");
     const [hour, minute, second] = splitTimestamp[1].split(".")[0].split(":");
     const date = new Date(+year, (+month) - 1, +day, +hour, +minute, +second);
-    console.log(-1);
     msgListModel.append({
         username: msg.author.username,
         userId: msg.author.id,

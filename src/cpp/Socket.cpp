@@ -24,7 +24,7 @@ void Socket::readyRead() {
     } else {
         for (int i = 0; i < msgs.length() - 1; ++i) {
             buffer->append(msgs[i]);
-            messageReceived(QString(*buffer));
+            messageReceived(QString::fromUtf8(*buffer));
             delete buffer;
             buffer = new QByteArray();
         }

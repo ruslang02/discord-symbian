@@ -8,6 +8,7 @@ Page {
     id: msgPage
 
     Component.onCompleted: Js.handleReady()
+    Component.onDestruction: Js.handleDestroyed()
 
     SystemPalette { id: palette; colorGroup: SystemPalette.Active }
 
