@@ -51,7 +51,7 @@ function handleReady() {
         );
     })
     window.client.on("ready", () => {
-        // console.log("Connected to Discord.");
+        console.log("Connected to Discord.");
     });
     window.client.on("debug", msg => {
         if (window.store.get("settings").debug) {
