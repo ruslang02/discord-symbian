@@ -15,9 +15,11 @@ function READY(client: Client, { d: data }: Payload<ReadyEventDto>) {
     client.user = new User(client, data.user);
     data.private_channels.forEach(channel => {
         const [recipient] = channel.recipients;
+
         client.users[recipient.id] = new User(client, recipient);
         client.privateChannels[channel.id] = new PrivateChannel(client, channel);
     });
+
     client.emit("ready");
 }
 

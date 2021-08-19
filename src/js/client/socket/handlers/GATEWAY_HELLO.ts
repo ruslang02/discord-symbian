@@ -5,7 +5,7 @@ function GATEWAY_HELLO(client: Client, { d: data }: Payload) {
     client.ws.send({
         op: -1,
         t: "GATEWAY_CONNECT",
-        d: ["MESSAGE_CREATE", "READY"]
+        d: ["MESSAGE_CREATE", "READY"],
     });
 }
 

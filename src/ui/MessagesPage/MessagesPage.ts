@@ -13,6 +13,42 @@ declare const msgListView: Qml.ListView;
 declare const sendButton: Qml.ToolButton;
 declare const inputField: Qml.TextArea;
 
+function sendMessage(content: string) {
+    inputField.text = "";
+    Http.request<MessageDto[]>({
+        method: "POST",
+        path: `https://discord.com/api/v9/channels/${msgPage.channelId}/messages`,
+        body: JSON.stringify({ content }),
+    }, (err, messages) => null);
+}
+
+function appendMessage(msg: MessageDto) {
+    const splitTimestamp = msg.timestamp.split("T");
+    const [year, month, day] = splitTimestamp[0].split("-");
+    const [hour, minute, second] = splitTimestamp[1].split(".")[0].split(":");
+    const date = new Date(+year, (+month) - 1, +day, +hour, +minute, +second);
+
+    msgListModel.append({
+        username: msg.author.username,
+        userId: msg.author.id,
+        userAvatar: msg.author.avatar,
+        content: msg.content,
+        time: Qt.formatDateTime(date, "h:mm:ss AP, dd.MM.yyyy"),
+    });
+}
+
+function loadMessages() {
+    msgListModel.clear();
+    Http.request<MessageDto[]>({
+        method: "GET",
+        path: `https://discord.com/api/v9/channels/${msgPage.channelId}/messages?limit=50`,
+    }, (err, messages) => {
+        if (err || !messages) return;
+        messages.reverse().forEach(msg => appendMessage(msg));
+        msgListView.positionViewAtIndex(messages.length - 1, ListView.End);
+    });
+}
+
 function handleMessage(msg: MessageDto) {
     if (msg.channel_id === msgPage.channelId) {
         appendMessage(msg);
@@ -26,11 +62,13 @@ function handleReady() {
         loadMessages();
         window.client.on("message", handleMessage);
     });
+
     inputField.implicitHeightChanged.connect(() => {
         if (inputField.text.indexOf("\n") !== -1) {
             sendMessage(inputField.text.replace("\n", ""));
         }
     });
+
     sendButton.clicked.connect(() => {
         sendMessage(inputField.text);
     });
@@ -38,43 +76,4 @@ function handleReady() {
 
 function handleDestroyed() {
     window.client.off("message", handleMessage);
-}
-
-function sendMessage(content: string) {
-    inputField.text = "";
-    Http.request<MessageDto[]>({
-        method: "POST",
-        path: `https://discord.com/api/v9/channels/${msgPage.channelId}/messages`,
-        body: JSON.stringify({ content })
-    }, (err, messages) => {
-        if (err || !messages) return;
-    });
-}
-
-function appendMessage(msg: MessageDto) {
-    const splitTimestamp = msg.timestamp.split("T");
-    const [year, month, day] = splitTimestamp[0].split("-");
-    const [hour, minute, second] = splitTimestamp[1].split(".")[0].split(":");
-    const date = new Date(+year, (+month) - 1, +day, +hour, +minute, +second);
-    msgListModel.append({
-        username: msg.author.username,
-        userId: msg.author.id,
-        userAvatar: msg.author.avatar,
-        content: msg.content,
-        // @ts-ignore
-        time: Qt.formatDateTime(date, "h:mm:ss AP, dd.MM.yyyy")
-    });
-}
-
-function loadMessages() {
-    msgListModel.clear();
-    Http.request<MessageDto[]>({
-        method: "GET",
-        path: `https://discord.com/api/v9/channels/${msgPage.channelId}/messages?limit=50`
-    }, (err, messages) => {
-        if (err || !messages) return;
-        messages.reverse().forEach(msg => appendMessage(msg));
-        msgListView.positionViewAtIndex(messages.length - 1, ListView.End);
-    });
-
 }

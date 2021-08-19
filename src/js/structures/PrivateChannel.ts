@@ -21,9 +21,10 @@ const PrivateChannel = class PrivateChannel {
 
     get recipients() {
         const recipients = this.recipientIds.map(id => this.client.users[id]);
-        return recipients; 
+
+        return recipients;
     }
-}
+};
 
 export type PrivateChannelImpl = typeof PrivateChannel;
 export type PrivateChannel = typeof PrivateChannel["prototype"];

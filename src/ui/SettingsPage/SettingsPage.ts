@@ -1,11 +1,14 @@
-import { DatabaseStore } from "../../js/store/DatabaseStore";
-declare const Store: DatabaseStore;
-Qt.include("../../js/store/DatabaseStore.js");
-
 declare const dialog: Qml.CommonDialog;
 declare const tokenItem: Qml.ListItem;
 declare const tokenField: Qml.TextField;
 declare const debugModeItem: Qml.SelectionListItem;
+
+function loadSettings() {
+    const settings = window.store.get("settings");
+
+    tokenField.text = settings.token ?? "";
+    debugModeItem.subTitle = settings.debug ? "Enabled" : "Disabled";
+}
 
 function handleReady() {
     dialog.buttonClicked.connect(bi => {
@@ -17,7 +20,8 @@ function handleReady() {
             });
         }
     });
-    tokenItem.clicked.connect(dialog.open);
+
+    tokenItem.clicked.connect(() => dialog.open());
     debugModeItem.clicked.connect(() => {
         window.store.fetch("settings", settings => {
             settings.debug = !settings.debug;
@@ -25,12 +29,6 @@ function handleReady() {
             loadSettings();
         });
     });
+
     loadSettings();
-}
-
-function loadSettings() {
-    const settings = window.store.get("settings");
-
-    tokenField.text = settings.token ?? "";
-    debugModeItem.subTitle = settings.debug ? "Enabled" : "Disabled";
 }

@@ -22,6 +22,7 @@ const SocketManager = class SocketManager {
 
     send(payload: Payload) {
         const json = JSON.stringify(payload);
+
         this.client.emit("debug", "Sending payload: " + json);
         socket.send(json);
     }
@@ -31,9 +32,9 @@ const SocketManager = class SocketManager {
     }
 
     private handleBackgroundMessage = (msg: string) => {
-        if (msg.indexOf(`"op":0`) !== -1) {
-            if (msg.indexOf(`"t":"MESSAGE_CREATE"`) !== -1) {
-                if (msg.indexOf(`"guild_id"`) === -1 || (
+        if (msg.indexOf("\"op\":0") !== -1) {
+            if (msg.indexOf("\"t\":\"MESSAGE_CREATE\"") !== -1) {
+                if (msg.indexOf("\"guild_id\"") === -1 || (
                     this.client.user && (msg.indexOf(this.client.user.id) !== -1)
                 )) {
                     this.handleMessage(msg);
@@ -56,12 +57,15 @@ const SocketManager = class SocketManager {
     private handlePayload(payload: Payload) {
         switch (payload.op) {
             case -1:
+
             case 0:
                 payload.t && handlers[payload.t]?.(this.client, payload);
                 break;
+
             case 10:
                 handlers.HELLO(this.client, payload);
                 break;
+
             case 11:
                 handlers.HEARTBEAT_ACK(this.client, payload);
                 break;

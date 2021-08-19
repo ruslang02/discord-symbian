@@ -1,3 +1,7 @@
+import { EventName } from "../../../structures/dto/EventName";
+import { Client } from "../../Client";
+import { Payload } from "../../../structures/dto/Payload";
+
 import { READY } from "./READY";
 declare const READY: READY;
 Qt.include("./READY.js");
@@ -22,10 +26,6 @@ import { MESSAGE_CREATE } from "./MESSAGE_CREATE";
 declare const MESSAGE_CREATE: MESSAGE_CREATE;
 Qt.include("./MESSAGE_CREATE.js");
 
-import { EventName } from "../../../structures/dto/EventName";
-import { Client } from "../../Client";
-import { Payload } from "../../../structures/dto/Payload";
-
 export type Handler = (client: Client, d: Payload) => void;
 
 const handlers = {
@@ -34,7 +34,7 @@ const handlers = {
     HEARTBEAT_ACK,
     HELLO,
     MESSAGE_CREATE,
-    READY
+    READY,
 };
 
 export type handlers = Record<EventName, Handler>;

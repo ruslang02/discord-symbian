@@ -3,7 +3,7 @@ declare const defaultSettings: defaultSettings;
 Qt.include("./Settings.js");
 
 const schemas = {
-    settings: defaultSettings
+    settings: defaultSettings,
 } as const;
 
 export type schemas = typeof schemas;

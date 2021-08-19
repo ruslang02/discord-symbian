@@ -1,8 +1,8 @@
 import { EventName } from "./EventName";
 
-export type Payload<T = any> = {
-    op: number,
-    d?: T | null,
-    s?: number | null,
+export type Payload<T = unknown> = {
+    op: number
+    d?: T | null
+    s?: number | null
     t?: EventName | null
-}
+};

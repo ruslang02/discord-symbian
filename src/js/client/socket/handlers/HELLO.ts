@@ -3,7 +3,7 @@ import { Client } from "../../Client";
 
 type HelloData = {
     heartbeat_interval: number
-}
+};
 
 function HELLO(client: Client, { d: data }: Payload<HelloData>) {
     if (!data) {
@@ -18,15 +18,15 @@ function HELLO(client: Client, { d: data }: Payload<HelloData>) {
             properties: {
                 "$os": "Symbian^3",
                 "$browser": "discord-symbian",
-                "$device": "Nokia E7-00"
-            }
-        }
+                "$device": "Nokia E7-00",
+            },
+        },
     });
 
     window.setInterval(() => {
         client.ws.send({
             op: 1,
-            d: null
+            d: null,
         });
     }, data.heartbeat_interval);
 }

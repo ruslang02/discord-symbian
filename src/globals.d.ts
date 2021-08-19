@@ -1,10 +1,10 @@
 type QSignal<T = void> = {
     disconnect(slot: (arg1: T) => void): void
     connect(slot: (arg1: T) => void): void
-}
+};
 interface Socket {
-    connectToServer(): void;
-    send(payload: string): void;
+    connectToServer(): void
+    send(payload: string): void
 
     messageReceived: QSignal<string>
 }
@@ -19,23 +19,23 @@ interface HttpClient {
 }
 
 declare namespace Qt {
-    type TransactionResult<T = any> = {
+    type TransactionResult<T = unknown> = {
         insertId: string
         rowsAffected: number
         rows: {
             length: number
             item(i: number): T
         }
-    }
+    };
     type Transaction = {
-        executeSql<T = any>(statement: string, values?: any[]): TransactionResult<T>
-    }
+        executeSql<T = unknown>(statement: string, values?: unknown[]): TransactionResult<T>
+    };
     type Database = {
         transaction(callback: (tx: Transaction) => void): void
         readTransaction(callback: (tx: Transaction) => void): void
-    }
-    declare function createQmlObject<T = any>(qml: string, parent?: any): T;
-    declare function formatDateTime(timestamp: string, format: string): string;
+    };
+    declare function createQmlObject<T = unknown>(qml: string, parent?: unknown): T;
+    declare function formatDateTime(date: Date, format: string): string;
     declare function include(filename: string): void;
     declare function resolvedUrl(url: string): string;
     declare function quit(): void;
@@ -53,10 +53,10 @@ declare namespace Qml {
         onDestroyed: QSignal
     }
 
-    interface Page {}
-    
+    interface Page extends Component {}
+
     interface InfoBanner {
-        iconSource: any
+        iconSource: string
         interactive: boolean
         platformInverted: boolean
         text: string
@@ -67,10 +67,10 @@ declare namespace Qml {
     }
 
     interface Dialog {
-        accept(): void;
-        close(): void;
-        open(): void;
-        reject(): void;
+        accept(): void
+        close(): void
+        open(): void
+        reject(): void
     }
 
     interface CommonDialog extends Dialog {
@@ -100,21 +100,21 @@ declare namespace Qml {
     interface PageStack {
         depth: number
 
-        push(page: any, properties?: Record<string, unknown>, immediate?: boolean): Qml.Page
+        push(page: string, properties?: Record<string, unknown>, immediate?: boolean): Qml.Page
         pop(): void
     }
 
-    interface Window {}
+    interface Window extends Component {}
 
     interface PageStackWindow extends Window {
         pageStack: PageStack
     }
 
-    interface ListModel<T = any> {
-        setProperty(index: number, prop: string, value: T): void;
-        remove(index: number): void;
-        append(value: T): void;
-        clear(): void;
+    interface ListModel<T = unknown> {
+        setProperty(index: number, prop: string, value: T): void
+        remove(index: number): void
+        append(value: T): void
+        clear(): void
     }
 
     interface ListItem {
@@ -128,7 +128,7 @@ declare namespace Qml {
 
     interface ListView {
         count: number
-        positionViewAtIndex(index: number, mode: number): void;
+        positionViewAtIndex(index: number, mode: number): void
     }
 
     interface Timer {
@@ -148,7 +148,13 @@ declare namespace Qml {
     }
 }
 
-declare function openDatabaseSync(identifier: string, version: string, description: string, estimatedSize: number, callback?: (db: Qt.Database) => void): Database;
+declare function openDatabaseSync(
+    identifier: string,
+    version: string,
+    description: string,
+    estimatedSize: number,
+    callback?: (db: Qt.Database) => void
+): Database;
 
 declare interface Window extends Qml.PageStackWindow, Qml.WithTimers {
     client: import("./js/client/Client").Client
@@ -164,4 +170,4 @@ const ListView: {
     End: number
     Visible: number
     Contain: number
-}
+};

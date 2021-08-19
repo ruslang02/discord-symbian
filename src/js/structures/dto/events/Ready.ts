@@ -2,6 +2,6 @@ import { PrivateChannelDto } from "../PrivateChannel";
 import { UserDto } from "../User";
 
 export interface ReadyEventDto {
-    user: UserDto,
+    user: UserDto
     private_channels: PrivateChannelDto[]
 }

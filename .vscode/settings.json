@@ -11,6 +11,8 @@
         "**/*.user": true,
         "moc/": true,
         "node_modules/": true,
-        "obj/": true
-    }
+        "obj/": true,
+        "Makefile": true
+    },
+    "files.eol": "\n"
 }

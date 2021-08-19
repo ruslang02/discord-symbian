@@ -1,14 +1,64 @@
 {
-  "name": "discord-symbian",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "tsc -p ."
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "typescript": "^4.3.5"
-  }
+    "name": "discord-symbian",
+    "version": "0.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build:ts": "tsc -p .",
+        "watch:ts": "tsc -w -p .",
+        "prepare": "husky install"
+    },
+    "repository": {
+        "url": "https://github.com/ruslang02/discord-symbian"
+    },
+    "author": "Ruslan Garifullin <ruslan.g2002@gmail.com>",
+    "license": "GPL-3.0",
+    "dependencies": {
+        "typescript": "^4.3.5"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^13.1.0",
+        "@commitlint/config-angular": "^13.1.0",
+        "@typescript-eslint/eslint-plugin": "^4.29.2",
+        "@typescript-eslint/parser": "^4.29.2",
+        "eslint": "^7.32.0",
+        "eslint-config-airbnb-base": "^14.2.1",
+        "eslint-plugin-import": "^2.24.0",
+        "husky": "^7.0.1",
+        "lint-staged": "^11.1.2"
+    },
+    "lint-staged": {
+        "*.ts": [
+            "eslint --fix"
+        ]
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-angular"
+        ],
+        "rules": {
+            "scope-case": [
+                2,
+                "always",
+                "pascal-case"
+            ],
+            "type-enum": [
+                2,
+                "always",
+                [
+                    "chore",
+                    "build",
+                    "ci",
+                    "docs",
+                    "feat",
+                    "fix",
+                    "perf",
+                    "refactor",
+                    "revert",
+                    "style",
+                    "test"
+                ]
+            ]
+        }
+    }
 }

@@ -5,8 +5,8 @@ const User = class User {
     id!: string;
     email?: string;
     discriminator!: string;
-    username!: string
-    avatar?: string
+    username!: string;
+    avatar?: string;
 
     constructor(private client: Client, dto: UserDto) {
         this._patch(dto);
@@ -18,7 +18,7 @@ const User = class User {
         this.email = data.email;
         this.avatar = data.avatar;
     }
-}
+};
 
 export type UserImpl = typeof User;
 export type User = typeof User["prototype"];

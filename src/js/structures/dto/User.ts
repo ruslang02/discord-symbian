@@ -5,4 +5,4 @@ export interface UserDto {
     username: string
     avatar?: string
     public_flags?: number
-};
+}
