@@ -41,6 +41,7 @@ function loadChannels() {
             const bc = window.client.privateChannels[b];
             return ac.lastMessageId.localeCompare(bc.lastMessageId);
         }).reverse();
+    channels.length = 50;
     channels.forEach(channelId => {
         const channel = window.client.privateChannels[channelId];
         const [recipient] = channel.recipients;

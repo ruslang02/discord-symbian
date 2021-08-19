@@ -56,6 +56,10 @@ const Client = class Client {
         this.ws.connect();
     }
 
+    setBackground(background: boolean) {
+        this.ws.setBackground(background);
+    }
+
     ready() {
         this.ws.ready();
     }

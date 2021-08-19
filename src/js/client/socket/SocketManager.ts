@@ -6,6 +6,8 @@ declare const handlers: handlers;
 Qt.include("./handlers/index.js");
 
 const SocketManager = class SocketManager {
+    private isBackground = false;
+
     constructor(private client: Client) { }
 
     connect() {
@@ -13,13 +15,8 @@ const SocketManager = class SocketManager {
     }
 
     ready() {
-        socket.messageReceived.connect((msg: string) => {
-            try {
-                this.client.emit("debug", "Received payload: " + msg);
-                this.handlePayload(JSON.parse(msg));
-            } catch (e) {
-                this.client.emit("error", e);
-            }
+        socket.messageReceived.connect(msg => {
+            this.isBackground ? this.handleBackgroundMessage(msg) : this.handleMessage(msg);
         });
     }
 
@@ -28,6 +25,33 @@ const SocketManager = class SocketManager {
         this.client.emit("debug", "Sending payload: " + json);
         socket.send(json);
     }
+
+    setBackground(bg: boolean) {
+        this.isBackground = bg;
+    }
+
+    private handleBackgroundMessage = (msg: string) => {
+        if (msg.indexOf(`"op":0`) !== -1) {
+            if (msg.indexOf(`"t":"MESSAGE_CREATE"`) !== -1) {
+                if (msg.indexOf(`"guild_id"`) === -1 || (
+                    this.client.user && (msg.indexOf(this.client.user.id) !== -1)
+                )) {
+                    this.handleMessage(msg);
+                }
+            }
+        } else {
+            this.handleMessage(msg);
+        }
+    };
+
+    private handleMessage = (msg: string) => {
+        try {
+            this.client.emit("debug", "Received payload: " + msg);
+            this.handlePayload(JSON.parse(msg));
+        } catch (e) {
+            this.client.emit("error", e);
+        }
+    };
 
     private handlePayload(payload: Payload) {
         switch (payload.op) {

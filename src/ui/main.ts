@@ -31,6 +31,11 @@ function loadGlobalScope() {
 function handleReady() {
     loadGlobalScope();
 
+    symbian.foregroundChanged.connect(() => {
+        console.log(symbian.foreground);
+        window.client.setBackground(!symbian.foreground);
+    });
+
     backButton.clicked.connect(() => {
         window.pageStack.depth <= 1 ? Qt.quit() : window.pageStack.pop()
     });

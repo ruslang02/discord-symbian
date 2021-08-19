@@ -144,6 +144,7 @@ declare namespace Qml {
 
     interface Symbian {
         foreground: boolean
+        foregroundChanged: QSignal<boolean>
     }
 }
 
