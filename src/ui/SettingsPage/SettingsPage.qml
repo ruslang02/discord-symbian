@@ -16,7 +16,7 @@ Page {
         titleText: "Token"
         buttonTexts: ["OK", "Cancel"]
         content: TextField {
-            id: tokenField
+            id: dialogField
             focus: true
             width: parent.width
             anchors.top: parent.top
@@ -45,6 +45,40 @@ Page {
                         mode: tokenItem.mode
                         role: "SubTitle"
                         text: "Discord user authentication token"
+                    }
+                }
+            }
+
+            ListItem {
+                id: cdnProxyUrlItem
+                Column {
+                    anchors.fill: cdnProxyUrlItem.paddingItem
+                    ListItemText {
+                        mode: cdnProxyUrlItem.mode
+                        role: "Title"
+                        text: "CDN proxy"
+                    }
+                    ListItemText {
+                        mode: cdnProxyUrlItem.mode
+                        role: "SubTitle"
+                        text: "Hostname and port of the CDN HTTP proxy"
+                    }
+                }
+            }
+
+            ListItem {
+                id: proxyUrlItem
+                Column {
+                    anchors.fill: proxyUrlItem.paddingItem
+                    ListItemText {
+                        mode: proxyUrlItem.mode
+                        role: "Title"
+                        text: "Gateway proxy"
+                    }
+                    ListItemText {
+                        mode: proxyUrlItem.mode
+                        role: "SubTitle"
+                        text: "Hostname and port of the gateway proxy"
                     }
                 }
             }
