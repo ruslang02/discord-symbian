@@ -23,7 +23,11 @@
     "eqeqeq": ["error"],
     "key-spacing": ["error"],
     "linebreak-style": ["error", "unix"],
-    "max-len": ["error", { "code": 100 }],
+    "max-len": ["error", {
+        "code": 100, 
+        "ignoreRegExpLiterals": true,
+        "ignoreTemplateLiterals": true
+    }],
     "no-else-return": ["warn"],
     "no-eq-null": ["error"],
     "no-extra-bind": ["error"],

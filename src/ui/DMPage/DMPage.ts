@@ -15,6 +15,7 @@ declare const dmPage: Qml.Page & Qml.Component & Qml.WithTimers;
 
 function loadChannels() {
     dmListModel.clear();
+    const { cdnProxyUrl } = window.store.get("settings");
     const channels = Object.keys(window.client.privateChannels)
         .filter(a => window.client.privateChannels[a].lastMessageId)
         .sort((a, b) => {
@@ -31,7 +32,7 @@ function loadChannels() {
         const item = {
             id: channelId,
             userId: recipient.id,
-            userAvatar: recipient.avatar,
+            userAvatar: `http://${cdnProxyUrl}/avatars/${recipient.id}/${recipient.avatar}.jpg?size=40`,
             userName: recipient.username,
             userDiscriminator: recipient.discriminator,
         };

@@ -1,3 +1,4 @@
+import { MessageAttachmentDto } from "./MessageAttachment";
 import { UserDto } from "./User";
 
 export interface MessageDto {
@@ -9,4 +10,5 @@ export interface MessageDto {
     timestamp: string
     edited_timestamp: string | null
     mentions: UserDto[]
+    attachments: MessageAttachmentDto[]
 }

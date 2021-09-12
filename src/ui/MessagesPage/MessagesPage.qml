@@ -38,6 +38,21 @@ Page {
             id: item1
             width: msgListView.width
             spacing: 5
+
+            Component.onCompleted: {
+                const attachmentsArr = JSON.parse(attachments);
+
+                attachmentsArr.forEach(function (url, i) {
+                    Qt.createQmlObject("import QtQuick 1.1;" +
+                        "Image { " +
+                        "fillMode: Image.PreserveAspectFit; " +
+                        "width: parent.width - 50; " +
+                        "smooth: true; " +
+                        "source: \"" + url + "\"" +
+                        "}", item1, "dynamicSnippet" + i)
+                });
+            }
+
             Row {
                 height: 20
                 spacing: 5
@@ -48,7 +63,8 @@ Page {
                     sourceSize.width: 20
                     sourceSize.height: 20
                     z: 1
-                    source: "https://cdn.discordapp.com/avatars/" + userId + "/" + userAvatar + ".jpg?size=20"
+                    smooth: true
+                    source: userAvatar
                 }
 
                 Text {
@@ -71,7 +87,11 @@ Page {
                 font.pixelSize: 16
                 width: msgListView.width
                 color: palette.text
+                textFormat: Text.RichText
                 wrapMode: Text.WrapAnywhere
+                onLinkActivated: function(url) {
+                    Qt.openUrlExternally(url);
+                }
             }
         }
     }

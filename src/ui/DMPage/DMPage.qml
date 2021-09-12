@@ -72,7 +72,7 @@ Page {
                     height: 40
                     sourceSize.width: 40
                     sourceSize.height: 40
-                    source: "https://cdn.discordapp.com/avatars/" + userId + "/" + userAvatar + ".jpg?size=40"
+                    source: userAvatar
                 }
                 Text {
                     y: 8
