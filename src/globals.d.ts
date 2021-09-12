@@ -3,7 +3,7 @@ type QSignal<T = void> = {
     connect(slot: (arg1: T) => void): void
 };
 interface Socket {
-    connectToServer(): void
+    connectToServer(host: string, port: number): void
     send(payload: string): void
 
     messageReceived: QSignal<string>
@@ -75,6 +75,7 @@ declare namespace Qml {
 
     interface CommonDialog extends Dialog {
         buttonClicked: QSignal<number>
+        titleText: string
     }
 
     interface ToolButton {
@@ -82,6 +83,7 @@ declare namespace Qml {
     }
 
     interface TextField {
+        placeholderText: string
         text: string
     }
 
@@ -113,6 +115,7 @@ declare namespace Qml {
     interface ListModel<T = unknown> {
         setProperty(index: number, prop: string, value: T): void
         remove(index: number): void
+        get(index: number): void
         append(value: T): void
         clear(): void
     }

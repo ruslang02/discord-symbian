@@ -11,7 +11,10 @@ const SocketManager = class SocketManager {
     constructor(private client: Client) { }
 
     connect() {
-        socket.connectToServer();
+        const settings = window.store.get("settings");
+        const [host, port] = settings.proxyUrl.split(":");
+
+        socket.connectToServer(host, +port);
     }
 
     ready() {

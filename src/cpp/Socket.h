@@ -10,7 +10,7 @@ class Socket : public QObject
 public:
     Socket();
     ~Socket();
-    Q_INVOKABLE void connectToServer();
+    Q_INVOKABLE void connectToServer(QString host, int port);
     Q_INVOKABLE void send(QString message);
 public slots:
     void error(QAbstractSocket::SocketError error);

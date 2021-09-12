@@ -31,14 +31,14 @@ void Socket::readyRead() {
     }
 }
 
-void Socket::connectToServer() {
+void Socket::connectToServer(QString host, int port) {
     socket = new QSslSocket(this);
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(error(QAbstractSocket::SocketError)));
     connect(socket, SIGNAL(readyRead()), this, SLOT(readyRead()));
     connect(socket, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(sslHandshakeFailure(QList<QSslError>)));
     socket->setProtocol(QSsl::AnyProtocol);
     socket->ignoreSslErrors();
-    socket->connectToHostEncrypted("discord.ruzik.xyz", 8471);
+    socket->connectToHostEncrypted(host, port);
     if (!socket->waitForEncrypted())
         qWarning() << "Error:" << socket->errorString();
 }
