@@ -1,21 +1,13 @@
-import { Http } from "../../js/client/http/Http";
-import { MessageDto } from "../../js/structures/dto/Message";
-declare const Http: Http;
-Qt.include("../../js/client/http/Http.js");
+import { Http } from "client/http/Http";
+import { MessageDto } from "structures/dto/Message";
+import { markdown } from "utils/drawdown";
 
-import { defineTimers } from "../timer";
-declare const defineTimers: defineTimers;
-Qt.include("../timer.js");
-
-import { markdown } from "../../js/utils/drawdown";
-declare const markdown: markdown;
-Qt.include("../../js/utils/drawdown.js");
-
-declare const msgPage: Qml.Page & Qml.WithTimers & { channelId?: string };
+declare const msgPage: Qml.Page & { channelId?: string };
 declare const msgListModel: Qml.ListModel;
 declare const msgListView: Qml.ListView;
 declare const sendButton: Qml.ToolButton;
 declare const inputField: Qml.TextArea;
+declare const msgListItem: Qml.Component;
 
 const URL_REGEXP = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/g;
 
@@ -29,14 +21,19 @@ function sendMessage(content: string) {
 }
 
 function appendMessage(msg: MessageDto) {
-    const { cdnProxyUrl } = window.store.get("settings");
+    const { cdnProxyUrl } = global.store.get("settings");
     const splitTimestamp = msg.timestamp.split("T");
     const [year, month, day] = splitTimestamp[0].split("-");
     const [hour, minute, second] = splitTimestamp[1].split(".")[0].split(":");
     const date = new Date(+year, (+month) - 1, +day, +hour, +minute, +second);
 
     const attachments = msg.attachments
-        .map(_ => _.url)
+        .map(attachment => {
+            const width = Math.min(attachment.width, window.width - 50);
+            const height = Math.floor(attachment.height / (attachment.width / width));
+
+            return attachment.url + `?width=${width}&height=${height}`;
+        })
         .map(url => url.replace("https://cdn.discordapp.com", `http://${cdnProxyUrl}`));
 
     msgListModel.append({
@@ -72,10 +69,9 @@ function handleMessage(msg: MessageDto) {
 }
 
 function handleReady() {
-    defineTimers(msgPage);
-    msgPage.setTimeout(() => {
+    setTimeout(() => {
         loadMessages();
-        window.client.on("message", handleMessage);
+        global.client.on("message", handleMessage);
     });
 
     inputField.implicitHeightChanged.connect(() => {
@@ -89,6 +85,22 @@ function handleReady() {
     });
 }
 
+function handleMessageReady(attachments: string) {
+    const attachmentsArr: string[] = JSON.parse(attachments);
+
+    attachmentsArr.forEach(url =>
+        Qt.createQmlObject(`
+            import QtQuick 1.1;
+            Image { 
+                fillMode: Image.PreserveAspectFit; 
+                width: parent.width - 50; 
+                smooth: true; 
+                source: "${url}";
+            }
+        `, msgListItem)
+    );
+}
+
 function handleDestroyed() {
-    window.client.off("message", handleMessage);
+    global.client.off("message", handleMessage);
 }

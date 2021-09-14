@@ -10,12 +10,19 @@ interface Socket {
 }
 
 interface AvkonHelper {
+    minimize(): void
     showPopup(title: string, message: string): void
 }
 
 interface HttpClient {
     request(method: string, path: string, auth: string, body: string): void
     requestFinished: QSignal<string>
+}
+
+interface QmlApplicationViewer {
+    hide(): void
+    show(): void
+    showMinimized(): void
 }
 
 declare namespace Qt {
@@ -34,26 +41,24 @@ declare namespace Qt {
         transaction(callback: (tx: Transaction) => void): void
         readTransaction(callback: (tx: Transaction) => void): void
     };
+    declare function createComponent(url: string): Qml.Component;
     declare function createQmlObject<T = unknown>(qml: string, parent?: unknown): T;
     declare function formatDateTime(date: Date, format: string): string;
-    declare function include(filename: string): void;
+    declare function include(filename: string): { status: number };
     declare function resolvedUrl(url: string): string;
     declare function quit(): void;
 }
 
 declare namespace Qml {
-    interface WithTimers {
-        setTimeout(callback: () => void, timeout?: number): number
-        setInterval(callback: () => void, interval?: number): number
-        clearTimeout(timer: number): void
-        clearInterval(timer: number): void
-    }
     interface Component {
         onCompleted: QSignal
         onDestroyed: QSignal
+        createObject(parent: Component): void
     }
 
-    interface Page extends Component {}
+    interface Page extends Component {
+        pageName: string
+    }
 
     interface InfoBanner {
         iconSource: string
@@ -106,7 +111,9 @@ declare namespace Qml {
         pop(): void
     }
 
-    interface Window extends Component {}
+    interface Window extends Component {
+        width: number
+    }
 
     interface PageStackWindow extends Window {
         pageStack: PageStack
@@ -149,6 +156,14 @@ declare namespace Qml {
         foreground: boolean
         foregroundChanged: QSignal<boolean>
     }
+
+    interface HapticsEffect {
+        running: boolean
+    }
+
+    interface Menu {
+        open(): void
+    }
 }
 
 declare function openDatabaseSync(
@@ -159,14 +174,18 @@ declare function openDatabaseSync(
     callback?: (db: Qt.Database) => void
 ): Database;
 
-declare interface Window extends Qml.PageStackWindow, Qml.WithTimers {
-    client: import("./js/client/Client").Client
-    store: import("./js/store/DatabaseStore").DatabaseStoreInst
+declare interface Window extends Qml.PageStackWindow {
 }
 
 const avkon: AvkonHelper;
 const socket: Socket;
 const http: HttpClient;
+const viewer: QmlApplicationViewer;
+const global: Qml.Component & {
+    client: import("./js/client/Client").Client
+    store: import("./js/store/DatabaseStore").DatabaseStore
+};
+
 const ListView: {
     Beginning: number
     Center: number

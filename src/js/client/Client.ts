@@ -1,12 +1,9 @@
 import { PrivateChannel } from "../structures/PrivateChannel";
 import { User } from "../structures/User";
 import { ClientEventCallbackArgs, ClientEvents } from "./ClientEvents";
-import { SocketManager, SocketManagerImpl } from "./socket/SocketManager";
+import { SocketManager } from "./socket/SocketManager";
 
-declare const SocketManager: SocketManagerImpl;
-Qt.include("./socket/SocketManager.js");
-
-const Client = class Client {
+export class Client {
     private listeners: Partial<Record<ClientEvents, (() => void)[]>> = {};
 
     privateChannels: Record<string, PrivateChannel> = {};
@@ -69,7 +66,4 @@ const Client = class Client {
     ready() {
         this.ws.ready();
     }
-};
-
-export type Client = typeof Client["prototype"];
-export type ClientImpl = typeof Client;
+}

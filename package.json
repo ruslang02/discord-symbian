@@ -6,6 +6,8 @@
     "scripts": {
         "build:ts": "tsc -p .",
         "watch:ts": "tsc -w -p .",
+        "lint": "eslint 'src/**/*.ts'",
+        "lint:fix": "eslint --fix src/js/**/*.ts",
         "prepare": "husky install"
     },
     "repository": {

@@ -1,6 +1,4 @@
-import { defineTimers } from "../timer";
-declare const defineTimers: defineTimers;
-Qt.include("../timer.js");
+import { PrivateChannel } from "structures/PrivateChannel";
 
 type DmListItem = {
     id: string
@@ -11,23 +9,23 @@ type DmListItem = {
 };
 
 declare const dmListModel: Qml.ListModel<DmListItem>;
-declare const dmPage: Qml.Page & Qml.Component & Qml.WithTimers;
+declare const dmPage: Qml.Page & Qml.Component;
 
 function loadChannels() {
     dmListModel.clear();
-    const { cdnProxyUrl } = window.store.get("settings");
-    const channels = Object.keys(window.client.privateChannels)
-        .filter(a => window.client.privateChannels[a].lastMessageId)
+    const { cdnProxyUrl } = global.store.get("settings");
+    const channels = Object.keys(global.client.privateChannels)
+        .filter(a => global.client.privateChannels[a].lastMessageId)
         .sort((a, b) => {
-            const ac = window.client.privateChannels[a];
-            const bc = window.client.privateChannels[b];
+            const ac = global.client.privateChannels[a];
+            const bc = global.client.privateChannels[b];
 
             return ac.lastMessageId.localeCompare(bc.lastMessageId);
         }).reverse();
 
     channels.length = 50;
     channels.forEach(channelId => {
-        const channel = window.client.privateChannels[channelId];
+        const channel: PrivateChannel = global.client.privateChannels[channelId];
         const [recipient] = channel.recipients;
         const item = {
             id: channelId,
@@ -42,9 +40,8 @@ function loadChannels() {
 }
 
 function handleReady() {
-    defineTimers(dmPage);
-    dmPage.setTimeout(() => {
-        window.client.on("ready", loadChannels);
+    setTimeout(() => {
+        global.client.on("ready", loadChannels);
     });
 }
 
@@ -53,7 +50,7 @@ function openMessages(channelId: string) {
         Qt.resolvedUrl("../MessagesPage/MessagesPage.qml"),
         {
             channelId,
-            channelName: "@" + window.client.privateChannels[channelId].recipients[0].username,
+            channelName: "@" + global.client.privateChannels[channelId].recipients[0].username,
         }
     );
 }

@@ -5,6 +5,8 @@ import "MessagesPage.js" as Js
 Page {
     property string channelId;
     property string channelName;
+    property string pageName: channelName;
+
     id: msgPage
 
     Component.onCompleted: Js.handleReady()
@@ -35,23 +37,11 @@ Page {
 
         model: msgListModel
         delegate: Column {
-            id: item1
+            id: msgListItem
             width: msgListView.width
             spacing: 5
 
-            Component.onCompleted: {
-                const attachmentsArr = JSON.parse(attachments);
-
-                attachmentsArr.forEach(function (url, i) {
-                    Qt.createQmlObject("import QtQuick 1.1;" +
-                        "Image { " +
-                        "fillMode: Image.PreserveAspectFit; " +
-                        "width: parent.width - 50; " +
-                        "smooth: true; " +
-                        "source: \"" + url + "\"" +
-                        "}", item1, "dynamicSnippet" + i)
-                });
-            }
+            Component.onCompleted: Js.handleMessageReady()
 
             Row {
                 height: 20
@@ -90,6 +80,7 @@ Page {
                 textFormat: Text.RichText
                 wrapMode: Text.WrapAnywhere
                 onLinkActivated: function(url) {
+                    console.log(url);
                     Qt.openUrlExternally(url);
                 }
             }

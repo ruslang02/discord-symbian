@@ -10,6 +10,7 @@ bld.inf
 obj/
 moc/
 **/*.js
+!**/*.util.js
 node_modules/
 !src/ui/client.js
 *.autosave

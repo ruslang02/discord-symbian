@@ -1,17 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Payload } from "../../structures/dto/Payload";
 import { Client } from "../Client";
+import { handlers } from "./handlers/index";
 
-import { handlers } from "./handlers";
-declare const handlers: handlers;
-Qt.include("./handlers/index.js");
-
-const SocketManager = class SocketManager {
+export class SocketManager {
     private isBackground = false;
 
     constructor(private client: Client) { }
 
     connect() {
-        const settings = window.store.get("settings");
+        const settings = global.store.get("settings");
         const [host, port] = settings.proxyUrl.split(":");
 
         socket.connectToServer(host, +port);
@@ -62,11 +60,11 @@ const SocketManager = class SocketManager {
             case -1:
 
             case 0:
-                payload.t && handlers[payload.t]?.(this.client, payload);
+                payload.t && handlers[payload.t]?.(this.client, payload as any);
                 break;
 
             case 10:
-                handlers.HELLO(this.client, payload);
+                handlers.HELLO(this.client, payload as any);
                 break;
 
             case 11:
@@ -74,7 +72,4 @@ const SocketManager = class SocketManager {
                 break;
         }
     }
-};
-
-export type SocketManager = typeof SocketManager["prototype"];
-export type SocketManagerImpl = typeof SocketManager;
+}

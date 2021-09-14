@@ -1,7 +1,7 @@
 import { Client } from "../client/Client";
 import { UserDto } from "./dto/User";
 
-const User = class User {
+export class User {
     id!: string;
     email?: string;
     discriminator!: string;
@@ -18,7 +18,4 @@ const User = class User {
         this.email = data.email;
         this.avatar = data.avatar;
     }
-};
-
-export type UserImpl = typeof User;
-export type User = typeof User["prototype"];
+}

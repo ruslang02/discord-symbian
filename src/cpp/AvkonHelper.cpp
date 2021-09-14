@@ -8,8 +8,9 @@
 
 #include <QTimer>
 #include <QString>
+#include <QtDeclarative/QDeclarativeView>
 
-AvkonHelper::AvkonHelper() {}
+AvkonHelper::AvkonHelper(QDeclarativeView *view, QObject *parent) : QObject(parent), m_view(view) {}
 
 #ifdef USE_AVKON
 const TUid DiscordUid = {0xEA2EE72D};
@@ -27,4 +28,7 @@ void AvkonHelper::showPopup(QString title, QString message) {
     } else TRAP_IGNORE(CAknDiscreetPopup::ShowGlobalPopupL(convertToSymbianString(title), convertToSymbianString(message),KAknsIIDNone, KNullDesC, 0, 0, KAknDiscreetPopupDurationLong, 0, NULL));
     QTimer::singleShot(2000,this,SLOT(cleanLastMsg()));
 #endif
+}
+void AvkonHelper::minimize() const {
+    m_view->lower();
 }

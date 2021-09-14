@@ -1,11 +1,11 @@
 import { Payload } from "../../../structures/dto/Payload";
 import { Client } from "../../Client";
 
-type HelloData = {
+export type HelloData = {
     heartbeat_interval: number
 };
 
-function HELLO(client: Client, { d: data }: Payload<HelloData>) {
+export function HELLO(client: Client, { d: data }: Payload<HelloData>) {
     if (!data) {
         throw new Error("No data provided to the handler.");
     }
@@ -23,12 +23,10 @@ function HELLO(client: Client, { d: data }: Payload<HelloData>) {
         },
     });
 
-    window.setInterval(() => {
+    setInterval(() => {
         client.ws.send({
             op: 1,
             d: null,
         });
     }, data.heartbeat_interval);
 }
-
-export type HELLO = typeof HELLO;

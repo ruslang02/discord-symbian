@@ -4,8 +4,7 @@
  * (c) Adam Leggett
  */
 
-export type markdown = (src: string) => string;
-function markdown(src: string) {
+export function markdown(src: string) {
     const rx_lt = /</g;
     const rx_gt = />/g;
     const rx_space = /\t|\r|\uf8ff/g;

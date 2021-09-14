@@ -1,7 +1,7 @@
 import { Payload } from "../../../structures/dto/Payload";
 import { Client } from "../../Client";
 
-function GATEWAY_HELLO(client: Client, { d: data }: Payload) {
+export function GATEWAY_HELLO(client: Client, { d: data }: Payload) {
     client.ws.send({
         op: -1,
         t: "GATEWAY_CONNECT",
@@ -11,5 +11,3 @@ function GATEWAY_HELLO(client: Client, { d: data }: Payload) {
         },
     });
 }
-
-export type GATEWAY_HELLO = typeof GATEWAY_HELLO;

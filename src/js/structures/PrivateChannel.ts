@@ -1,8 +1,7 @@
 import { Client } from "../client/Client";
 import { PrivateChannelDto } from "./dto/PrivateChannel";
-import { User } from "./User";
 
-const PrivateChannel = class PrivateChannel {
+export class PrivateChannel {
     id!: string;
     type!: number;
     lastMessageId!: string;
@@ -24,8 +23,4 @@ const PrivateChannel = class PrivateChannel {
 
         return recipients;
     }
-};
-
-export type PrivateChannelImpl = typeof PrivateChannel;
-export type PrivateChannel = typeof PrivateChannel["prototype"];
-
+}

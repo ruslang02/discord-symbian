@@ -5,26 +5,11 @@ import "DMPage.js" as Js
 Page {
     id: dmPage
 
+    property string pageName: "Direct Messages"
+
     Component.onCompleted: Js.handleReady()
 
     SystemPalette { id: palette; colorGroup: SystemPalette.Active }
-    
-    ListHeading {
-        id: dmListHeading
-        z: 3
-
-        ListItemText {
-            id: dmListHeadingText
-            x: 0
-            y: 3
-            anchors.fill: dmListHeading.paddingItem
-            role: "Heading"
-            text: "Direct Messages"
-            font.pointSize: 16
-            horizontalAlignment: Text.AlignLeft
-            verticalAlignment: Text.AlignTop
-        }
-    }
 
     ListModel {
         id: dmListModel
@@ -44,7 +29,7 @@ Page {
     ListView {
         id: dmListView
         height: parent.height
-        anchors.top: dmListHeading.bottom
+        anchors.top: parent.top
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.left: parent.left

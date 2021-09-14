@@ -1,12 +1,10 @@
-const defaultSettings = {
-    token: undefined,
+export const defaultSettings: Settings = {
+    token: "",
     debug: false,
     autoConnect: false,
     cdnProxyUrl: "discord.ruzik.xyz",
     proxyUrl: "discord.ruzik.xyz:8471",
 };
-
-export type defaultSettings = Settings;
 
 export type Settings = {
     token: string

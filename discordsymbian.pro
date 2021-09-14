@@ -16,13 +16,14 @@ ICON = assets/logo.svg
 
 QT += network sql
 
-CONFIG += qt-components
+CONFIG += debug mobility qt-components
 
-folder_01.source = src/ui
+MOBILITY += mutlimedia feedback systeminfo
+MOBILITY += publishsubscribe
+
+folder_01.source = src/js
 folder_01.target = .
-folder_02.source = src/js
-folder_02.target = .
-DEPLOYMENTFOLDERS = folder_01 folder_02
+DEPLOYMENTFOLDERS = folder_01
 
 HEADERS += \
     src/cpp/Socket.h \

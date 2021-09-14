@@ -4,6 +4,7 @@ import "./SettingsPage.js" as Js
 
 Page {
     id: settingsPage
+    property string pageName: "Settings";
 
     Component.onCompleted: Js.handleReady()
 

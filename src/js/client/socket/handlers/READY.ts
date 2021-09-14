@@ -1,16 +1,10 @@
 import { ReadyEventDto } from "../../../structures/dto/events/Ready";
 import { Payload } from "../../../structures/dto/Payload";
-import { UserImpl } from "../../../structures/User";
+import { PrivateChannel } from "../../../structures/PrivateChannel";
+import { User } from "../../../structures/User";
 import { Client } from "../../Client";
 
-import { PrivateChannel, PrivateChannelImpl } from "../../../structures/PrivateChannel";
-declare const PrivateChannel: PrivateChannelImpl;
-Qt.include("../../../structures/PrivateChannel.js");
-
-declare const User: UserImpl;
-Qt.include("../../../structures/User.js");
-
-function READY(client: Client, { d: data }: Payload<ReadyEventDto>) {
+export function READY(client: Client, { d: data }: Payload<ReadyEventDto>) {
     if (!data) return;
     client.user = new User(client, data.user);
     data.private_channels.forEach(channel => {
@@ -22,5 +16,3 @@ function READY(client: Client, { d: data }: Payload<ReadyEventDto>) {
 
     client.emit("ready");
 }
-
-export type READY = typeof READY;

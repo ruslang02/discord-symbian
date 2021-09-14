@@ -1,30 +1,24 @@
-import { ClientImpl } from "../js/client/Client";
-import { DatabaseStore } from "../js/store/DatabaseStore";
-import { defineTimers } from "./timer";
-
-declare const Client: ClientImpl;
-Qt.include("../js/client/Client.js");
-declare const Store: DatabaseStore;
-Qt.include("../js/store/DatabaseStore.js");
-declare const defineTimers: defineTimers;
-Qt.include("./timer.js");
+import { Client } from "client/Client";
+import { DatabaseStore } from "store/DatabaseStore";
 
 declare const backButton: Qml.ToolButton;
 declare const loginButton: Qml.ToolButton;
 declare const settingsButton: Qml.ToolButton;
+declare const menuButton: Qml.ToolButton;
+declare const minimizeButton: Qml.ToolButton;
+declare const menu: Qml.Menu;
 declare const banner: Qml.InfoBanner;
 declare const symbian: Qml.Symbian;
+declare const hapticsEffect: Qml.HapticsEffect;
 
 function loadGlobalScope() {
-    Object.defineProperty(window, "store", {
-        value: new Store(),
-    });
-
-    Object.defineProperty(window, "client", {
+    Object.defineProperty(global, "client", {
         value: new Client(),
     });
 
-    defineTimers(window);
+    Object.defineProperty(global, "store", {
+        value: new DatabaseStore(),
+    });
 }
 
 function handleReady() {
@@ -32,20 +26,18 @@ function handleReady() {
 
     symbian.foregroundChanged.connect(() => {
         console.log(symbian.foreground);
-        window.client.setBackground(!symbian.foreground);
+        global.client.setBackground(!symbian.foreground);
     });
 
     backButton.clicked.connect(() => {
-        if (window.pageStack.depth <= 1) {
-            Qt.quit();
-        } else window.pageStack.pop();
+        Qt.quit();
     });
 
     loginButton.clicked.connect(() => {
-        const settings = window.store.get("settings");
+        const settings = global.store.get("settings");
 
         if (settings.token) {
-            window.client.login(settings.token);
+            global.client.login(settings.token);
         } else {
             banner.text = "You need to provide a token in order to sign in.";
             banner.open();
@@ -58,30 +50,40 @@ function handleReady() {
         );
     });
 
-    window.client.on("ready", () => {
+    menuButton.clicked.connect(() => {
+        menu.open();
+    });
+
+    minimizeButton.clicked.connect(() => {
+        avkon.minimize();
+    });
+
+    global.client.on("ready", () => {
         console.log("Connected to Discord.");
     });
 
-    window.client.on("debug", msg => {
-        if (window.store.get("settings").debug) {
+    global.client.on("debug", msg => {
+        if (global.store.get("settings").debug) {
             console.log("[Socket DEBUG]", msg);
         }
     });
 
-    window.client.on("message", msg => {
-        if (!msg.guild_id
-            || (window.client.user
-                && msg.mentions.some(m => m.id === window.client.user?.id)
-                && msg.author.id !== window.client.user?.id)
+    global.client.on("message", msg => {
+        if (msg.author.id !== global.client.user!.id
+            && (!msg.guild_id || msg.mentions.some(m => m.id === global.client.user!.id))
         ) {
             if (symbian.foreground) {
                 banner.text = `<b>${msg.author.username}</b><br />${msg.content}`;
                 banner.open();
+                hapticsEffect.running = true;
             } else {
                 avkon.showPopup(msg.author.username, msg.content);
+
+                hapticsEffect.running = true;
+                setTimeout(() => { hapticsEffect.running = true; }, 500);
             }
         }
     });
 
-    window.client.ready();
+    global.client.ready();
 }

@@ -1,15 +1,13 @@
-import { schemas, StoreKey } from "./schemas";
-declare const schemas: schemas;
-Qt.include("./schemas.js");
+import { schemas, Schemas, StoreKey } from "./schemas";
 
 type DbField = {
     name: string
     value: string
 };
 
-const Store = class DatabaseStore {
+export class DatabaseStore {
     private db: Qt.Database;
-    private cache: Record<StoreKey, schemas[StoreKey]> = {} as Record<StoreKey, schemas[StoreKey]>;
+    private cache: Record<StoreKey, Schemas[StoreKey]> = {} as Record<StoreKey, Schemas[StoreKey]>;
 
     constructor() {
         this.db = openDatabaseSync(
@@ -46,20 +44,20 @@ const Store = class DatabaseStore {
         });
     }
 
-    fetch<K extends StoreKey>(key: K, callback: (data: schemas[K]) => void) {
+    fetch<K extends StoreKey>(key: K, callback: (data: Schemas[K]) => void) {
         this.db.readTransaction(tx => {
             const result = tx.executeSql<DbField>("SELECT * FROM AppData WHERE name = ?", [key]);
-            const data: schemas[K] = JSON.parse(result.rows.item(0).value);
+            const data: Schemas[K] = JSON.parse(result.rows.item(0).value);
 
             callback(data);
         });
     }
 
-    get<K extends StoreKey>(key: K): Readonly<schemas[K]> {
+    get<K extends StoreKey>(key: K): Readonly<Schemas[K]> {
         return this.cache[key] ?? schemas[key];
     }
 
-    set<K extends StoreKey>(key: K, data: schemas[K] | ((data: schemas[K]) => schemas[K])) {
+    set<K extends StoreKey>(key: K, data: Schemas[K] | ((data: Schemas[K]) => Schemas[K])) {
         this.db.transaction(tx => {
             if (typeof data === "function") {
                 this.fetch(key, realData => {
@@ -78,7 +76,4 @@ const Store = class DatabaseStore {
             }
         });
     }
-};
-
-export type DatabaseStore = typeof Store;
-export type DatabaseStoreInst = InstanceType<typeof Store>;
+}
