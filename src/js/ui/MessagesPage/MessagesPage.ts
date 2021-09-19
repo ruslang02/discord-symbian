@@ -1,4 +1,5 @@
 import { Http } from "client/http/Http";
+import { defaultSettings } from "store/Settings";
 import { MessageDto } from "structures/dto/Message";
 import { markdown } from "utils/drawdown";
 
@@ -21,7 +22,7 @@ function sendMessage(content: string) {
 }
 
 function appendMessage(msg: MessageDto) {
-    const { cdnProxyUrl } = global.store.get("settings");
+    const cdnProxyUrl = global.store.get("settings").cdnProxyUrl || defaultSettings.cdnProxyUrl;
     const splitTimestamp = msg.timestamp.split("T");
     const [year, month, day] = splitTimestamp[0].split("-");
     const [hour, minute, second] = splitTimestamp[1].split(".")[0].split(":");

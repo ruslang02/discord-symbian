@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { defaultSettings } from "store/Settings";
 import { Payload } from "../../structures/dto/Payload";
 import { Client } from "../Client";
 import { handlers } from "./handlers/index";
@@ -10,7 +11,7 @@ export class SocketManager {
 
     connect() {
         const settings = global.store.get("settings");
-        const [host, port] = settings.proxyUrl.split(":");
+        const [host, port] = (settings.proxyUrl || defaultSettings.proxyUrl).split(":");
 
         socket.connectToServer(host, +port);
     }

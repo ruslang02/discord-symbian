@@ -2,7 +2,7 @@ export const defaultSettings: Settings = {
     token: "",
     debug: false,
     autoConnect: false,
-    cdnProxyUrl: "discord.ruzik.xyz",
+    cdnProxyUrl: "discord.ruzik.xyz:80",
     proxyUrl: "discord.ruzik.xyz:8471",
 };
 
