@@ -12,11 +12,11 @@ declare const symbian: Qml.Symbian;
 declare const hapticsEffect: Qml.HapticsEffect;
 
 function loadGlobalScope() {
-    Object.defineProperty(global, "client", {
+    Object.defineProperty(window, "client", {
         value: new Client(),
     });
 
-    Object.defineProperty(global, "store", {
+    Object.defineProperty(window, "store", {
         value: new DatabaseStore(),
     });
 }
@@ -26,7 +26,7 @@ function handleReady() {
 
     symbian.foregroundChanged.connect(() => {
         console.log(symbian.foreground);
-        global.client.setBackground(!symbian.foreground);
+        window.client.setBackground(!symbian.foreground);
     });
 
     backButton.clicked.connect(() => {
@@ -34,10 +34,10 @@ function handleReady() {
     });
 
     loginButton.clicked.connect(() => {
-        const settings = global.store.get("settings");
+        const settings = window.store.get("settings");
 
         if (settings.token) {
-            global.client.login(settings.token);
+            window.client.login(settings.token);
         } else {
             banner.text = "You need to provide a token in order to sign in.";
             banner.open();
@@ -58,19 +58,19 @@ function handleReady() {
         avkon.minimize();
     });
 
-    global.client.on("ready", () => {
+    window.client.on("ready", () => {
         console.log("Connected to Discord.");
     });
 
-    global.client.on("debug", msg => {
-        if (global.store.get("settings").debug) {
+    window.client.on("debug", msg => {
+        if (window.store.get("settings").debug) {
             console.log("[Socket DEBUG]", msg);
         }
     });
 
-    global.client.on("message", msg => {
-        if (msg.author.id !== global.client.user!.id
-            && (!msg.guild_id || msg.mentions.some(m => m.id === global.client.user!.id))
+    window.client.on("message", msg => {
+        if (msg.author.id !== window.client.user!.id
+            && (!msg.guild_id || msg.mentions.some(m => m.id === window.client.user!.id))
         ) {
             if (symbian.foreground) {
                 banner.text = `<b>${msg.author.username}</b><br />${msg.content}`;
@@ -85,5 +85,11 @@ function handleReady() {
         }
     });
 
-    global.client.ready();
+    window.client.ready();
+
+    const dmPage = Qt.createComponent("./DMPage/DMPage.qml") as Qml.Page;
+
+    dmPage.createObject(window);
+
+    window.initialPage = dmPage;
 }

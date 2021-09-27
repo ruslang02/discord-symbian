@@ -10,7 +10,7 @@ export class SocketManager {
     constructor(private client: Client) { }
 
     connect() {
-        const settings = global.store.get("settings");
+        const settings = window.store.get("settings");
         const [host, port] = (settings.proxyUrl || defaultSettings.proxyUrl).split(":");
 
         socket.connectToServer(host, +port);

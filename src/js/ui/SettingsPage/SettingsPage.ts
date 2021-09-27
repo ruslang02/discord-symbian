@@ -8,7 +8,7 @@ declare const dialogField: Qml.TextField;
 declare const debugModeItem: Qml.SelectionListItem;
 
 function loadSettings() {
-    const settings = global.store.get("settings");
+    const settings = window.store.get("settings");
 
     debugModeItem.subTitle = settings.debug ? "Enabled" : "Disabled";
 }
@@ -18,10 +18,10 @@ function handleReady() {
 
     dialog.buttonClicked.connect(bi => {
         if (bi === 0) {
-            global.store.fetch("settings", settings => {
+            window.store.fetch("settings", settings => {
                 // @ts-ignore
                 settings[property] = dialogField.text;
-                global.store.set("settings", settings);
+                window.store.set("settings", settings);
                 loadSettings();
             });
         }
@@ -29,7 +29,7 @@ function handleReady() {
 
     tokenItem.clicked.connect(() => {
         dialog.titleText = "Token";
-        dialogField.text = global.store.get("settings").token ?? "";
+        dialogField.text = window.store.get("settings").token ?? "";
         dialogField.placeholderText = "";
         property = "token";
         dialog.open();
@@ -37,7 +37,7 @@ function handleReady() {
 
     cdnProxyUrlItem.clicked.connect(() => {
         dialog.titleText = "CDN proxy URL";
-        dialogField.text = global.store.get("settings").cdnProxyUrl ?? "";
+        dialogField.text = window.store.get("settings").cdnProxyUrl ?? "";
         dialogField.placeholderText = "hostname:port";
         property = "cdnProxyUrl";
         dialog.open();
@@ -45,16 +45,16 @@ function handleReady() {
 
     proxyUrlItem.clicked.connect(() => {
         dialog.titleText = "Gateway proxy URL";
-        dialogField.text = global.store.get("settings").proxyUrl ?? "";
+        dialogField.text = window.store.get("settings").proxyUrl ?? "";
         dialogField.placeholderText = "hostname:port";
         property = "proxyUrl";
         dialog.open();
     });
 
     debugModeItem.clicked.connect(() => {
-        global.store.fetch("settings", settings => {
+        window.store.fetch("settings", settings => {
             settings.debug = !settings.debug;
-            global.store.set("settings", settings);
+            window.store.set("settings", settings);
             loadSettings();
         });
     });

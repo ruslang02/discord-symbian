@@ -116,6 +116,7 @@ declare namespace Qml {
     }
 
     interface PageStackWindow extends Window {
+        initialPage: Qml.Page
         pageStack: PageStack
     }
 
@@ -174,17 +175,15 @@ declare function openDatabaseSync(
     callback?: (db: Qt.Database) => void
 ): Database;
 
-declare interface Window extends Qml.PageStackWindow {
+declare interface Window extends Qml.Component, Qml.PageStackWindow {
+    client: import("./js/client/Client").Client
+    store: import("./js/store/DatabaseStore").DatabaseStore
 }
 
 const avkon: AvkonHelper;
 const socket: Socket;
 const http: HttpClient;
 const viewer: QmlApplicationViewer;
-const global: Qml.Component & {
-    client: import("./js/client/Client").Client
-    store: import("./js/store/DatabaseStore").DatabaseStore
-};
 
 const ListView: {
     Beginning: number

@@ -7,6 +7,8 @@ Page {
 
     property string pageName: "Direct Messages"
 
+    tools: toolbar
+
     Component.onCompleted: Js.handleReady()
 
     SystemPalette { id: palette; colorGroup: SystemPalette.Active }

@@ -22,7 +22,7 @@ function sendMessage(content: string) {
 }
 
 function appendMessage(msg: MessageDto) {
-    const cdnProxyUrl = global.store.get("settings").cdnProxyUrl || defaultSettings.cdnProxyUrl;
+    const cdnProxyUrl = window.store.get("settings").cdnProxyUrl || defaultSettings.cdnProxyUrl;
     const splitTimestamp = msg.timestamp.split("T");
     const [year, month, day] = splitTimestamp[0].split("-");
     const [hour, minute, second] = splitTimestamp[1].split(".")[0].split(":");
@@ -72,7 +72,7 @@ function handleMessage(msg: MessageDto) {
 function handleReady() {
     setTimeout(() => {
         loadMessages();
-        global.client.on("message", handleMessage);
+        window.client.on("message", handleMessage);
     });
 
     inputField.implicitHeightChanged.connect(() => {
@@ -103,5 +103,5 @@ function handleMessageReady(attachments: string) {
 }
 
 function handleDestroyed() {
-    global.client.off("message", handleMessage);
+    window.client.off("message", handleMessage);
 }

@@ -2,7 +2,7 @@
     "files.exclude": {
         "**/*.cache": true,
         "**/*.inf": true,
-        "**/*.js": true,
+        "src/js/**/*.js": true,
         "**/*.loc": true,
         "**/*.mmp": true,
         "**/*.pkg": true,

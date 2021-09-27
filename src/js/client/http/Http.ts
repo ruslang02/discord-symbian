@@ -12,7 +12,7 @@ export const Http = {
     ) {
         const METHOD = method.toUpperCase();
 
-        http.request(METHOD, path, global.store.get("settings").token, body ?? "");
+        http.request(METHOD, path, window.store.get("settings").token, body ?? "");
 
         function listener(response: string) {
             callback(null, JSON.parse(response));

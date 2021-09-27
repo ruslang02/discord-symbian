@@ -12,6 +12,5 @@ moc/
 **/*.js
 !**/*.util.js
 node_modules/
-!src/ui/client.js
 *.autosave
 Makefile
