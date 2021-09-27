@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { defaultSettings } from "store/Settings";
+import { Settings } from "store/Settings";
 import { Payload } from "../../structures/dto/Payload";
 import { Client } from "../Client";
 import { handlers } from "./handlers/index";
@@ -10,8 +10,7 @@ export class SocketManager {
     constructor(private client: Client) { }
 
     connect() {
-        const settings = window.store.get("settings");
-        const [host, port] = (settings.proxyUrl || defaultSettings.proxyUrl).split(":");
+        const [host, port = "80"] = Settings.get("proxyUrl").split(":");
 
         socket.connectToServer(host, +port);
     }

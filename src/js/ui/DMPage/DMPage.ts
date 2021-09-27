@@ -1,4 +1,4 @@
-import { defaultSettings } from "store/Settings";
+import { Settings } from "store/Settings";
 import { PrivateChannel } from "structures/PrivateChannel";
 
 type DmListItem = {
@@ -14,7 +14,7 @@ declare const dmPage: Qml.Page & Qml.Component;
 
 function loadChannels() {
     dmListModel.clear();
-    const cdnProxyUrl = window.store.get("settings").cdnProxyUrl || defaultSettings.cdnProxyUrl;
+    const cdnProxyUrl = Settings.get("cdnProxyUrl");
     const channels = Object.keys(window.client.privateChannels)
         .filter(a => window.client.privateChannels[a].lastMessageId)
         .sort((a, b) => {

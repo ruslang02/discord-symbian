@@ -1,5 +1,6 @@
 import { Client } from "client/Client";
 import { DatabaseStore } from "store/DatabaseStore";
+import { Settings } from "store/Settings";
 
 declare const backButton: Qml.ToolButton;
 declare const loginButton: Qml.ToolButton;
@@ -34,10 +35,10 @@ function handleReady() {
     });
 
     loginButton.clicked.connect(() => {
-        const settings = window.store.get("settings");
+        const token = Settings.get("token");
 
-        if (settings.token) {
-            window.client.login(settings.token);
+        if (token) {
+            window.client.login(token);
         } else {
             banner.text = "You need to provide a token in order to sign in.";
             banner.open();
@@ -63,7 +64,7 @@ function handleReady() {
     });
 
     window.client.on("debug", msg => {
-        if (window.store.get("settings").debug) {
+        if (Settings.get("debug")) {
             console.log("[Socket DEBUG]", msg);
         }
     });

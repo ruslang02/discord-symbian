@@ -13,3 +13,15 @@ export type Settings = {
     cdnProxyUrl: string
     proxyUrl: string
 };
+
+export const Settings = {
+    get<K extends keyof Settings>(key: K) {
+        return window.store.get("settings")[key] ?? defaultSettings[key];
+    },
+    set<K extends keyof Settings>(key: K, value: Settings[K]) {
+        window.store.fetch("settings", settings => {
+            settings[key] = value;
+            window.store.set("settings", settings);
+        });
+    },
+};

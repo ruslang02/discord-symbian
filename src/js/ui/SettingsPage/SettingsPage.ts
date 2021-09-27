@@ -8,9 +8,7 @@ declare const dialogField: Qml.TextField;
 declare const debugModeItem: Qml.SelectionListItem;
 
 function loadSettings() {
-    const settings = window.store.get("settings");
-
-    debugModeItem.subTitle = settings.debug ? "Enabled" : "Disabled";
+    debugModeItem.subTitle = Settings.get("debug") ? "Enabled" : "Disabled";
 }
 
 function handleReady() {
@@ -18,18 +16,14 @@ function handleReady() {
 
     dialog.buttonClicked.connect(bi => {
         if (bi === 0) {
-            window.store.fetch("settings", settings => {
-                // @ts-ignore
-                settings[property] = dialogField.text;
-                window.store.set("settings", settings);
-                loadSettings();
-            });
+            Settings.set(property, dialogField.text);
+            loadSettings();
         }
     });
 
     tokenItem.clicked.connect(() => {
         dialog.titleText = "Token";
-        dialogField.text = window.store.get("settings").token ?? "";
+        dialogField.text = Settings.get("token") ?? "";
         dialogField.placeholderText = "";
         property = "token";
         dialog.open();
@@ -37,7 +31,7 @@ function handleReady() {
 
     cdnProxyUrlItem.clicked.connect(() => {
         dialog.titleText = "CDN proxy URL";
-        dialogField.text = window.store.get("settings").cdnProxyUrl ?? "";
+        dialogField.text = Settings.get("cdnProxyUrl") ?? "";
         dialogField.placeholderText = "hostname:port";
         property = "cdnProxyUrl";
         dialog.open();
@@ -45,18 +39,15 @@ function handleReady() {
 
     proxyUrlItem.clicked.connect(() => {
         dialog.titleText = "Gateway proxy URL";
-        dialogField.text = window.store.get("settings").proxyUrl ?? "";
+        dialogField.text = Settings.get("proxyUrl") ?? "";
         dialogField.placeholderText = "hostname:port";
         property = "proxyUrl";
         dialog.open();
     });
 
     debugModeItem.clicked.connect(() => {
-        window.store.fetch("settings", settings => {
-            settings.debug = !settings.debug;
-            window.store.set("settings", settings);
-            loadSettings();
-        });
+        Settings.set("debug", !Settings.get("debug"));
+        loadSettings();
     });
 
     loadSettings();

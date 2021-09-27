@@ -1,3 +1,5 @@
+import { Settings } from "store/Settings";
+
 type HTTPRequest = {
     method: string
     path: string
@@ -12,7 +14,7 @@ export const Http = {
     ) {
         const METHOD = method.toUpperCase();
 
-        http.request(METHOD, path, window.store.get("settings").token, body ?? "");
+        http.request(METHOD, path, Settings.get("token"), body ?? "");
 
         function listener(response: string) {
             callback(null, JSON.parse(response));
