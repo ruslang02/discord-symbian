@@ -16,7 +16,13 @@ export type Settings = {
 
 export const Settings = {
     get<K extends keyof Settings>(key: K) {
-        return window.store.get("settings")[key] ?? defaultSettings[key];
+        const defaultValue = defaultSettings[key];
+        const type = typeof defaultValue;
+        const value = window.store.get("settings")[key];
+
+        if (!value && type === "string") return defaultValue;
+
+        return value ?? defaultValue;
     },
     set<K extends keyof Settings>(key: K, value: Settings[K]) {
         window.store.fetch("settings", settings => {

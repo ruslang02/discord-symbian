@@ -26,7 +26,6 @@ function handleReady() {
     loadGlobalScope();
 
     symbian.foregroundChanged.connect(() => {
-        console.log(symbian.foreground);
         window.client.setBackground(!symbian.foreground);
     });
 
